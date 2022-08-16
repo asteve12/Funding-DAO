@@ -15,7 +15,7 @@ interface Props{
 }
 
 
-export const ProposalCard = ({ proposal, openModal }: Props):ReactNode => {
+export const ProposalCard = ({ proposal, openModal }: Props) => {
     const { seconds, minutes, hours, days } = useTimer({
         expiryTimestamp: new Date(parseInt(proposal.livePeriod) * 1000),
         onExpire:()=> console.warn("onExpire called"),
