@@ -46,10 +46,6 @@ interface DataCOntextProps{
     recipient: string;
     imageId: string;
 })=> Promise<void>;
-
-
-
-
 }
 
 
@@ -75,7 +71,7 @@ const DataContext = createContext<DataCOntextProps>({
     
 })
 
-export const DataProvider = ({ children }:{children:ReactNode}): ReactNode => {
+export const DataProvider = ({ children }:{children:ReactNode}) => {
     const data = useProviderData();
     
     return (
@@ -98,12 +94,15 @@ export const useProviderData = () => {
     const [currentBal, setCurrentBal] = useState("")
     const [allVotes, setAllVotes] = useState<string[]>()
     const [allInvestedProposal, setAllInvestedProposal] = useState<Proposal[]>([]);
-    const { activate, account, deactivate,error, library } = useWeb3React()
+    const { activate, account, deactivate,error, library,active } = useWeb3React()
     const { injected } = connectors;
-    let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
+   
+
     useEffect(() => {
-    connect()
-    })
+       
+        connect()
+       
+    },[])
 
 
 //help connect to wallet
@@ -116,24 +115,35 @@ const connect = async () => {
             alert("no wallet available try installing metamask")
             return;
         }
-
-        await loadBlockchainData()
+    console.log("connected",active)
+     await loadBlockchainData()
+       
     }
 
 
     const loadBlockchainData = async () => {
+        console.log("addr", process.env.NEXT_PUBLIC_Fund_CONT_ADDR)
+        let provider = new ethers.providers.JsonRpcProvider()
+        let contractInstance = new ethers.Contract(`${process.env.NEXT_PUBLIC_Fund_CONT_ADDR}`, FundingDAO.abi,provider);
         
         setFundingDao(contractInstance);
 
         setTimeout(async () => {
+
+            console.log("totalPRO",await contractInstance.getAllProposals())
             let totalProposals = await contractInstance.getAllProposals()
+            console.log("hrllo", totalProposals)
             let tempProposals: Proposal[] = [];
+
             totalProposals.forEach((item: Proposal) => {
                 tempProposals.push(item);
                 
             })
+
             setAllProposals(tempProposals)
+
             let isStakeholder = await contractInstance.isStakeholder()
+           
             setIsStakeholder(isStakeholder)
             let isMember = await contractInstance.isMember()
             setIsMember(isMember)
@@ -168,6 +178,7 @@ const connect = async () => {
     }
 
     const createStakeholder = async (amount: string) => {
+        let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
         if (amount === "" || amount === "0") {
             toast.error("Please enter valid amount",{})
             
@@ -190,6 +201,7 @@ const connect = async () => {
         recipient: string;
         imageId:string
         }) => {
+            let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
         if (amount === "" || amount === "0") {
             toast.error("Please enter valid amount",{})
         }
@@ -208,22 +220,26 @@ const connect = async () => {
     }
 
     const getProposal = async (id: string) => {
+        let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
         let data = await contractInstance.getProposal(id)
         let proposal: Proposal = data;
         return proposal;
     }
 
     const vote = async (id: string, vote: boolean) => {
+        let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
         await contractInstance.vote(id, vote)
         loadBlockchainData();
     }
 
     const provideFunds = async (id: string, amount: string) => {
+        let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
         await contractInstance.provideFunds(id, ethers.utils.parseUnits(amount, "wei"), { value: ethers.utils.parseUnits(amount, "wei") })
         loadBlockchainData();
     }
 
     const releaseFunding = async (id: string) => {
+        let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
         await contractInstance.releaseFunding(id)
         loadBlockchainData();
     }

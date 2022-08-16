@@ -10,12 +10,13 @@ import { Web3Provider } from "@ethersproject/providers";
 
 
 function getLibrary(provider:any, connector:any) {
-
   return new Web3Provider(provider)
 }
 
 const Home = () => {
+  
   const { isMember, loading, account } = useData()
+
   if (loading) {
     return (
       <Web3ReactProvider getLibrary={getLibrary}>

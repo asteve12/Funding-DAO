@@ -1,7 +1,7 @@
-import { HardhatUserConfig } from "hardhat/config";
+
 import "@nomicfoundation/hardhat-toolbox";
 
-const config: HardhatUserConfig = {
+const config = {
   networks: {
     hardhat: {
       chainId: 1337
