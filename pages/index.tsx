@@ -7,6 +7,7 @@ import styles from "../styles/Home.module.css";
 import { ethers } from "ethers";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
+import 'tailwindcss/tailwind.css'
 
 
 function getLibrary(provider:any, connector:any) {
@@ -16,6 +17,7 @@ function getLibrary(provider:any, connector:any) {
 const Home = () => {
   
   const { isMember, loading, account } = useData()
+  console.log("isMember",isMember)
 
   if (loading) {
     return (
@@ -51,7 +53,7 @@ const Home = () => {
         <Navbar></Navbar>
 
         {!isMember && <CreateMember />}
-        {!isMember && <Proposallist/>}
+        {isMember && <Proposallist/>}
       </div>
     </Web3ReactProvider>
    

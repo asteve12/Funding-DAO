@@ -1,5 +1,4 @@
-import '../styles/globals.css'
-import "tailwindcss/tailwind.css";
+import 'tailwindcss/tailwind.css'
 import type { AppProps } from 'next/app'
 import { DataProvider } from "../contexts/dataContext"
 import { Web3ReactProvider } from '@web3-react/core';
@@ -16,8 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Web3ReactProvider
     getLibrary={getLibrary}
     >
-    <>
-    <ToastContainer
+     <ToastContainer
       position="top-right"
       autoClose={5000}
       hideProgressBar={false}
@@ -33,7 +31,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     <DataProvider>
       <Component {...pageProps} />
     </DataProvider>
-      </>
       </Web3ReactProvider>
   )
 }

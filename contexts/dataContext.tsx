@@ -1,7 +1,9 @@
 import FundingDAO from "../abis/FundingDAO.json";
-import { useWeb3React } from "@web3-react/core";
+import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
+
 import { connectors } from "../connectors"
-import { ethers } from "ethers";
+import {ethers} from "ethers"
+
 
 // import 
 import  {
@@ -14,6 +16,7 @@ import  {
 
 import { Proposal } from "../utils/interface"
 import { toast } from "react-toastify";
+
 
 
 
@@ -92,39 +95,67 @@ export const useProviderData = () => {
     const [isStakeholder, setIsStakeholder] = useState(false);
     const [isMember, setIsMember] = useState(false);
     const [currentBal, setCurrentBal] = useState("")
-    const [allVotes, setAllVotes] = useState<string[]>()
+    const [allVotes, setAllVotes] = useState<string[]>([])
     const [allInvestedProposal, setAllInvestedProposal] = useState<Proposal[]>([]);
-    const { activate, account, deactivate,error, library,active } = useWeb3React()
+    const {chainId,connector, activate, account, deactivate,error, library,active } = useWeb3React()
     const { injected } = connectors;
+
+
+    useEffect(() => {
+        if (error instanceof UnsupportedChainIdError) {
+            console.log("error", error)
+            console.log("chainId", chainId)
+            //@ts-ignore
+            if(Boolean(connector.supportedChainIds) && !connector.supportedChainIds.includes(chainId)) {
+                //@ts-ignore
+                throw new UnsupportedChainIdError(chainId, connector.supportedChainIds);
+              }
+            
+          
+      }
+      
+    }) 
    
 
     useEffect(() => {
        
         connect()
        
-    },[])
+    }, [])
+
+    useEffect(() => {
+        active && loadBlockchainData()
+    },[active])
+
+
+   
+    // useEffect(() => {
+    //     console.log("error",error)
+    // },[error])
+
+  
 
 
 //help connect to wallet
 const connect = async () => {
-        //@ts-ignore
-        if (window.ethereum) {
-            await activate(injected)
-        }
-        else {
-            alert("no wallet available try installing metamask")
-            return;
-        }
-    console.log("connected",active)
-     await loadBlockchainData()
+       
+    try {
+        await activate(injected)
+     }
+    catch (e) {
+        console.log("error12", e)
+        console.log("my-error",error)
+  
+        
+    }
+       
        
     }
 
 
     const loadBlockchainData = async () => {
-        console.log("addr", process.env.NEXT_PUBLIC_Fund_CONT_ADDR)
-        let provider = new ethers.providers.JsonRpcProvider()
-        let contractInstance = new ethers.Contract(`${process.env.NEXT_PUBLIC_Fund_CONT_ADDR}`, FundingDAO.abi,provider);
+        console.log("load block",`${process.env.NEXT_PUBLIC_Fund_CONT_ADDR}`, FundingDAO.abi,library.getSigner())
+        let contractInstance = new ethers.Contract(`${process.env.NEXT_PUBLIC_Fund_CONT_ADDR}`, FundingDAO.abi,library.getSigner());
         
         setFundingDao(contractInstance);
 
@@ -148,13 +179,15 @@ const connect = async () => {
             let isMember = await contractInstance.isMember()
             setIsMember(isMember)
             if (isMember && !isStakeholder) {
-                var memberBal = await contractInstance.getStakeholderBal()
-                setCurrentBal(ethers.utils.parseUnits(memberBal,"ethers").toString())
+                let memberBal = await contractInstance.getMemberBal()
+                console.log("memberBal",memberBal)
+                setCurrentBal(ethers.utils.formatUnits(memberBal,"ether").toString())
             }
             else if (isMember && isStakeholder) {
                 let stakeholderBal = await contractInstance.getStakeholderBal()
                 setCurrentBal(ethers.utils.parseUnits(stakeholderBal, "ethers").toString())
                 let votes = await contractInstance.getVotes()
+                console.log("vote",votes)
                 var res = tempProposals.filter((proposal) => {
                     const vote = votes.find((vote: string) => vote === proposal.id)
                     if (vote) {
@@ -163,6 +196,7 @@ const connect = async () => {
                     return false
                     
                 });
+                
                 setAllInvestedProposal(res)
                 setAllVotes(votes);
                 
@@ -178,14 +212,14 @@ const connect = async () => {
     }
 
     const createStakeholder = async (amount: string) => {
-        let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
+         let contractInstance = new ethers.Contract(`${process.env.NEXT_PUBLIC_Fund_CONT_ADDR}`, FundingDAO.abi, library.getSigner());
         if (amount === "" || amount === "0") {
             toast.error("Please enter valid amount",{})
             
         }
-         
-        await contractInstance.createStakeholder({ value: ethers.utils.formatUnits(amount, "wei") })
-        loadBlockchainData()
+       
+        let tx=  await contractInstance.createStakeholder({value:parseInt(ethers.utils.formatUnits(amount,"wei"))})
+        // await loadBlockchainData()
     }
 
     const createProposal = async ({
@@ -201,7 +235,8 @@ const connect = async () => {
         recipient: string;
         imageId:string
         }) => {
-            let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
+            
+            let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library.getSigner());
         if (amount === "" || amount === "0") {
             toast.error("Please enter valid amount",{})
         }

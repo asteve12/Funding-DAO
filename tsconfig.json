@@ -1,4 +1,5 @@
 {
+  "*": ["node_modules/*"],
   "compilerOptions": {
     "target": "es2020",
     "module": "commonjs",
@@ -25,5 +26,7 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "@typechain/*": ["node_modules/@typechain/*", "typechain_typing/*"]
+ 
 }

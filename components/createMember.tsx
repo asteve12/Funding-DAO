@@ -30,7 +30,9 @@ export const CreateMember = () => {
                         onClick={() => {
                              createStakeholder(val)
                          }}
-                    ></button>
+                    >
+                         Send
+                    </button>
                 </div>
             </div>
 

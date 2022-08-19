@@ -5,6 +5,7 @@ import Img from "next/image"
 import { useData } from "../contexts/dataContext"
 import { Proposal } from "../utils/interface";
 import Arweave from "arweave"
+import 'tailwindcss/tailwind.css'
 
 
 
