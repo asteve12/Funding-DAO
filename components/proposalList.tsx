@@ -40,6 +40,7 @@ export const Proposallist = () => {
                 }
                 {
                     allProposals.map((proposal) => {
+                        console.log("proposal",proposal)
 
                         return (
                             <ProposalCard

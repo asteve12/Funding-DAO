@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 contract FundingDAO is ReentrancyGuard, AccessControl {
     struct Proposal {
         uint256 id;
+        string imageId;
         uint256 amount;
         uint256 livePeriod;
         uint256 voteInFavor;
@@ -53,12 +54,13 @@ contract FundingDAO is ReentrancyGuard, AccessControl {
         string calldata title,
         string calldata desc,
         address receiverAddress,
-        uint256 amount
+        uint256 amount,
+        string calldata imageId
     ) public payable onlyMember("Only Members can create proposals") {
-        require(
-            msg.value == 5 * 10**18,
-            "You need to add 5 MATIC to create a proposal"
-        );
+        // require(
+        //     msg.value == 1 * 10**18,
+        //     "You need to add 1 MATIC to create a proposal"
+        // );
 
         uint256 proposalId = proposalsCount;
         Proposal storage proposal = proposals[proposalId];
@@ -71,6 +73,7 @@ contract FundingDAO is ReentrancyGuard, AccessControl {
         proposal.livePeriod = block.timestamp + votingPeriod;
         proposal.isPaid = false;
         proposal.isCompleted = false;
+        proposal.imageId = imageId;
         proposalsCount++;
         emit NewProposal(msg.sender, amount);
     }
