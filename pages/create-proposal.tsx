@@ -48,8 +48,11 @@ import { ethers } from "ethers"
         await bundlrInstance.ready();
          const loadedBal = ethers.utils.formatEther((await bundlrInstance.getLoadedBalance()).toString())
          if (parseInt(loadedBal) > 0) {
+             alert("uploading image started")
             //@ts-ignore
              let tx = await bundlrInstance.uploader.upload(image, [{ name: "Content-Type", value: "image/png" }])
+             console.log("wahala",`http://arweave.net/${tx.data.id}`)
+
              setURI(`http://arweave.net/${tx.data.id}`)
              return true;
         
@@ -69,14 +72,16 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     let uploadRes = await uploadToBundlr()
     if (uploadRes === true) {
         alert("file uploaded successfully") 
+        console.log("12Night",title,description,amount,recipient,URI )
+        createProposal({title,description,amount,recipient,imageId:URI})
+              setTitle("");
+             setDescription("");
+             setAmount("")
+             setRecipient("")
+             setImage(null)
     }
-   
-   createProposal({title,description,amount,recipient,imageId:URI ?? ""})
-         setTitle("");
-        setDescription("");
-        setAmount("")
-        setRecipient("")
-        setImage(null)
+
+ 
 
      } 
 

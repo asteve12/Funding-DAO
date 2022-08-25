@@ -57,10 +57,10 @@ contract FundingDAO is ReentrancyGuard, AccessControl {
         uint256 amount,
         string calldata imageId
     ) public payable onlyMember("Only Members can create proposals") {
-        // require(
-        //     msg.value == 1 * 10**18,
-        //     "You need to add 1 MATIC to create a proposal"
-        // );
+        require(
+            msg.value == 1 * 10**18,
+            "You need to add 1 MATIC to create a proposal"
+        );
 
         uint256 proposalId = proposalsCount;
         Proposal storage proposal = proposals[proposalId];
@@ -202,5 +202,9 @@ contract FundingDAO is ReentrancyGuard, AccessControl {
             members[msg.sender] += amount;
             stakeholders[msg.sender] += amount;
         }
+    }
+
+    function withdraw(uint256 value) public {
+        payable(msg.sender).transfer(value);
     }
 }

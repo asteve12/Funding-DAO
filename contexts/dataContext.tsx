@@ -168,7 +168,13 @@ const connect = async () => {
             let tempProposals: Proposal[] = [];
 
             totalProposals.forEach((item: Proposal) => {
-                tempProposals.push(item);
+                const {id,amount,livePeriod} = item
+                tempProposals.push({
+                    ...item,
+                    id: ethers.utils.formatUnits(id),
+                    amount: ethers.utils.formatUnits(amount,"ether"),
+                    livePeriod: ethers.utils.formatUnits(livePeriod)
+                });
                 
             })
             console.log("tempProposals",tempProposals)
@@ -186,7 +192,7 @@ const connect = async () => {
             }
             else if (isMember && isStakeholder) {
                 let stakeholderBal = await contractInstance.getStakeholderBal()
-                setCurrentBal(ethers.utils.parseUnits(stakeholderBal, "ethers").toString())
+                setCurrentBal(ethers.utils.formatUnits(stakeholderBal, "ether"))
                 let votes = await contractInstance.getVotes()
                 console.log("vote",votes)
                 var res = tempProposals.filter((proposal) => {
@@ -219,7 +225,7 @@ const connect = async () => {
             
         }
        
-        let tx=  await contractInstance.createStakeholder({value:parseInt(ethers.utils.formatUnits(amount,"wei"))})
+        let tx=  await contractInstance.createStakeholder({value:ethers.utils.parseUnits(amount,"ether")})
         // await loadBlockchainData()
     }
 
@@ -241,6 +247,7 @@ const connect = async () => {
         if (amount === "" || amount === "0") {
             toast.error("Please enter valid amount",{})
         }
+        alert("creating stakeholder")
         console.log("amount12", title,
         description,
         recipient,
@@ -250,10 +257,10 @@ const connect = async () => {
             title,
             description,
             recipient,
-            ethers.utils.parseUnits(amount, "wei"),
+            ethers.utils.parseUnits(amount, "ether"),
             imageId,
             {
-                value:ethers.utils.parseUnits(amount,"wei")
+                value:ethers.utils.parseUnits(amount,"ether")
             }
         )
         loadBlockchainData();

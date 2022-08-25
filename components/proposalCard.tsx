@@ -46,7 +46,7 @@ export const ProposalCard = ({ proposal, openModal }: Props) => {
                     <span className="text-blue-600">
                           Funding Amount - {" "}
                    
-                        {ethers.utils.formatUnits(proposal.amount,"wei")} MATIC
+                        {proposal.amount} MATIC
                         </span>
                     </span>
 
