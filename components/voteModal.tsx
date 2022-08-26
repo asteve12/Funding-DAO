@@ -25,26 +25,27 @@ export const VoteModal = ({
 
     const { allVotes, vote } = useData();
     const [image, setImage] = useState<string>("")
+    console.log("image", proposal)
 
-    useEffect(() => {
-        let arweave = Arweave.init({
-            host: "arweave.net",
-            port: 443,
-            protocol:"https"
-        })
+    // useEffect(() => {
+    //     let arweave = Arweave.init({
+    //         host: "arweave.net",
+    //         port: 443,
+    //         protocol:"https"
+    //     })
 
-        if (proposal?.imageId) {
-            arweave.transactions
-                .getData(proposal?.imageId, {
-                    decode: true,
-                string:true,
-                })
-                .then((data) => {
-                setImage(data as string)
-            })
-        }
+    //     if (proposal?.imageId) {
+    //         arweave.transactions
+    //             .getData(proposal?.imageId, {
+    //                 decode: true,
+    //             string:true,
+    //             })
+    //             .then((data) => {
+    //             setImage(data as string)
+    //         })
+    //     }
         
-    })
+    // })
 
 
 
@@ -108,12 +109,13 @@ export const VoteModal = ({
                                         {proposal?.desc}
                                     </p>
                                 </div>
-                                {
-                                    image && <Img
-                                        src={`data:image/png;base64,${image}`}
+                               
+                                {proposal?.imageId && <img
+                                        //@ts-ignore
+                                        src={`${proposal?.imageId}`}
                                         width={100}
                                         height={100}
-                                    ></Img>
+                                    ></img>
                                 }
                                 <div className="my-5">
                                     <p className="text-sm text-gray-500 line-clamp-5">
@@ -121,7 +123,7 @@ export const VoteModal = ({
                                         <span className="font-bold text-black">
                                             <>
                                             {
-                                                ethers.utils.parseUnits(proposal?.amount ?? "0")
+                                               proposal?.amount  ?  proposal?.amount:"0.0"
                                             } MATIC</>
                                             
                                         </span>
@@ -139,6 +141,18 @@ export const VoteModal = ({
 
                                 {!allVotes.includes(proposal?.id ?? "") ? (
                                     <div className="flex flex-row justify-between mt-5">
+                                         <div className="mt-4">
+                                        <button
+                                            type="button"
+                                            className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                            onClick={async () => {
+                                            await vote(proposal?.id ?? "", true);
+                                            closeModal();
+                                            }}
+                                        >
+                                            Vote In Favor 👍🏻
+                                        </button>
+                                         </div>
                                         <div className="mt-4">
                                             <button
                                                 type="button"

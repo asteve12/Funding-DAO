@@ -36,7 +36,7 @@ contract FundingDAO is ReentrancyGuard, AccessControl {
     bytes32 public constant MEMBER = keccak256("MEMBER");
     bytes32 public constant STAKEHOLDER = keccak256("STAKEHOLDER");
 
-    uint32 constant votingPeriod = 3 days;
+    uint32 constant votingPeriod = 3 minutes;
     uint256 public proposalsCount = 0;
 
     modifier onlyMember(string memory message) {
@@ -145,8 +145,8 @@ contract FundingDAO is ReentrancyGuard, AccessControl {
             if (proposal.id == votes[msg.sender][i])
                 revert("You can only vote once.");
         }
-        if (inFavour) proposal.voteInFavor;
-        else proposal.voteAgainst;
+        if (inFavour) proposal.voteInFavor++;
+        else proposal.voteAgainst++;
 
         votes[msg.sender].push(proposalId);
     }

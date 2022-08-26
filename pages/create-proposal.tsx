@@ -54,7 +54,16 @@ import { ethers } from "ethers"
              console.log("wahala",`http://arweave.net/${tx.data.id}`)
 
              setURI(`http://arweave.net/${tx.data.id}`)
-             return true;
+
+             if (tx.data.id) {
+                 return true
+             }
+             else {
+                 return false
+             }
+
+            
+            
         
         }
         else {
@@ -70,10 +79,10 @@ import { ethers } from "ethers"
 const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     let uploadRes = await uploadToBundlr()
-    if (uploadRes === true) {
+    if (uploadRes === true && URI) {
         alert("file uploaded successfully") 
-        console.log("12Night",title,description,amount,recipient,URI )
-        createProposal({title,description,amount,recipient,imageId:URI})
+        console.log("12Nightof12",title,description,amount,recipient,URI)
+         createProposal({title,description,amount,recipient,imageId:URI})
               setTitle("");
              setDescription("");
              setAmount("")

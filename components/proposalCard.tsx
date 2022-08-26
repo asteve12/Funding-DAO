@@ -21,9 +21,11 @@ export const ProposalCard = ({ proposal, openModal }: Props) => {
         onExpire:()=> console.warn("onExpire called"),
     })
 
+
     const { isStakeholder, getProposal } = useData()
     const isCompleted = new Date(parseInt(proposal.livePeriod) * 1000) < new Date();
-    console.log(`isCompleted`, isCompleted)
+    
+    // console.log(`isCompleted`,  typeof seconds)
 
     return (
         <div
@@ -31,7 +33,7 @@ export const ProposalCard = ({ proposal, openModal }: Props) => {
             onClick={
                 async () => {
                     if (isStakeholder) {
-                        console.log("isStakeholder")
+                        console.log("isStakeholder12",proposal.id)
                         let data: Proposal = await getProposal(proposal.id)
                         console.log("data", data)
                         openModal()

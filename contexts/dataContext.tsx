@@ -1,7 +1,7 @@
 import FundingDAO from "../abis/FundingDAO.json";
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
 import { connectors } from "../connectors"
-import {  ethers } from "ethers"
+import {  BigNumber, ethers } from "ethers"
 
 
 // import 
@@ -164,16 +164,23 @@ const connect = async () => {
 
             console.log("totalPRO",await contractInstance.getAllProposals())
             let totalProposals = await contractInstance.getAllProposals()
-            console.log("hrllo", totalProposals)
+            
             let tempProposals: Proposal[] = [];
 
             totalProposals.forEach((item: Proposal) => {
-                const {id,amount,livePeriod} = item
+               
+                const { id, amount, livePeriod,voteAgainst,voteInFavor } = item
+                
+                let livePer = BigNumber.from(livePeriod).toNumber()
+                console.log("hrllo11", BigNumber.from(voteAgainst).toNumber())
                 tempProposals.push({
                     ...item,
-                    id: ethers.utils.formatUnits(id),
-                    amount: ethers.utils.formatUnits(amount,"ether"),
-                    livePeriod: ethers.utils.formatUnits(livePeriod)
+                    id:BigNumber.from(id).toNumber().toString(),
+                    amount: ethers.utils.formatUnits(amount, "ether"),
+                    livePeriod: BigNumber.from(livePeriod).toNumber().toString(),
+                    voteAgainst: BigNumber.from(voteAgainst).toNumber().toString(),
+                    voteInFavor: BigNumber.from(voteInFavor).toNumber().toString()
+                    // livePeriod: ethers.utils.formatUnits(livePeriod)
                 });
                 
             })
@@ -229,6 +236,8 @@ const connect = async () => {
         // await loadBlockchainData()
     }
 
+   
+
     const createProposal = async ({
         title,
         description,
@@ -268,14 +277,16 @@ const connect = async () => {
     }
 
     const getProposal = async (id: string) => {
-        let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
-        let data = await contractInstance.getProposal(id)
+        let contractInstance = new ethers.Contract(`${process.env.NEXT_PUBLIC_Fund_CONT_ADDR}`, FundingDAO.abi, library.getSigner());
+
+        let data = await contractInstance.getProposal(parseInt(id))
         let proposal: Proposal = data;
+       console.log("obtainedProposal",data)
         return proposal;
     }
 
     const vote = async (id: string, vote: boolean) => {
-        let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
+        let contractInstance = new ethers.Contract(`${process.env.NEXT_PUBLIC_Fund_CONT_ADDR}`, FundingDAO.abi, library.getSigner());
         await contractInstance.vote(id, vote)
         loadBlockchainData();
     }
