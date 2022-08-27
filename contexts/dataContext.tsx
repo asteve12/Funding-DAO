@@ -155,7 +155,7 @@ const connect = async () => {
 
 
     const loadBlockchainData = async () => {
-        
+        console.log("addr",process.env.NEXT_PUBLIC_Fund_CONT_ADDR)
         let contractInstance = new ethers.Contract(`${process.env.NEXT_PUBLIC_Fund_CONT_ADDR}`, FundingDAO.abi,library.getSigner());
         
         setFundingDao(contractInstance);
