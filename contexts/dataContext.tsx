@@ -203,7 +203,7 @@ const connect = async () => {
                 let votes = await contractInstance.getVotes()
                 console.log("vote",votes)
                 var res = tempProposals.filter((proposal) => {
-                    const vote = votes.find((vote: string) => vote === proposal.id)
+                    const vote = votes.find((vote: string) => BigNumber.from(vote).toNumber().toString() === proposal.id)
                     if (vote) {
                         return true;
                     }
@@ -292,13 +292,13 @@ const connect = async () => {
     }
 
     const provideFunds = async (id: string, amount: string) => {
-        let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
-        await contractInstance.provideFunds(id, ethers.utils.parseUnits(amount, "wei"), { value: ethers.utils.parseUnits(amount, "wei") })
+        let contractInstance =  new ethers.Contract(`${process.env.NEXT_PUBLIC_Fund_CONT_ADDR}`, FundingDAO.abi, library.getSigner());
+        await contractInstance.provideFunds(id, ethers.utils.parseUnits(amount, "wei"), { value: ethers.utils.parseUnits(amount, "ether") })
         loadBlockchainData();
     }
 
     const releaseFunding = async (id: string) => {
-        let contractInstance = new ethers.Contract(`${process.env.Fund_CONT_ADDR_NEXT_PUBLIC}`, FundingDAO.abi, library);
+        let contractInstance =  new ethers.Contract(`${process.env.NEXT_PUBLIC_Fund_CONT_ADDR}`, FundingDAO.abi, library.getSigner());
         await contractInstance.releaseFunding(id)
         loadBlockchainData();
     }

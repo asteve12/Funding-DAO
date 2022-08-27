@@ -6,7 +6,8 @@ import styles from "../styles/Home.module.css"
 
 
 export default function Home() {
-    const { allInvestedProposal, loading, account } = useData();
+  const { allInvestedProposal, loading, account } = useData();
+  console.log("allInvestedProposal",allInvestedProposal)
   
     if (loading) {
       return (

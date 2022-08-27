@@ -48,12 +48,12 @@ export const ProposalInvestmentCard = ({
             closeModal={() => {
               setIsOpen(false);
             }}
-            fundingRequired={ethers.utils.parseUnits(
+            fundingRequired={ethers.utils.formatUnits(
                 (
                   parseInt(proposal.amount) - parseInt(proposal.totalFundRaised)
-                ).toString(),"wei"
+                ).toString(),"ether"
               ).toString()}
-            fundingRaised={ethers.utils.parseUnits(proposal.totalFundRaised,"wei").toString()}
+            fundingRaised={ethers.utils.formatUnits(proposal.totalFundRaised,"ether").toString()}
           />
           <div className="flex flex-col border-2 border-gray-300 rounded-lg p-3 hover:border-blue-700">
             <div className="flex flex-col">
@@ -79,9 +79,9 @@ export const ProposalInvestmentCard = ({
             <span className="my-3 font-bold">
               {isCompleted &&
               parseInt(proposal.voteInFavor) > parseInt(proposal.voteAgainst)
-                ? `Total Funding Received - ${ethers.utils.parseUnits(
+                ? `Total Funding Received - ${ethers.utils.formatUnits(
                     proposal.totalFundRaised
-                  ,"wei")} MATIC`
+                  ,"1")} MATIC`
                 : ""}
             </span>
             {!proposal.isPaid && isCompleted && (
