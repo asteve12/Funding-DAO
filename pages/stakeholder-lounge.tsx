@@ -34,7 +34,7 @@ export default function Home() {
         </Head>
         <Navbar />
         <main className="w-screen flex py-4 flex-grow justify-center">
-          <div className="w-1/3 border-2 border-blue-600 rounded-xl p-3 mt-10 h-full">
+          <div className="w-full sm:w-1/3 border-2 border-blue-600 rounded-xl p-3 mt-10 h-full">
             <div className="flex flex-col justify-center">
               <p className="my-2">
                 Current Balance :{" "}

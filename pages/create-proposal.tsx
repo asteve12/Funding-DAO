@@ -112,8 +112,8 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
             <Navbar />
             {
                 isMember && (
-                    <main className="w-full flex flex-col py-4 flex-grow max-w-5xl items-center">\
-                        <div className="w-3/4 border-2 border-blue-600 rounded-xl p-3 mt-10">
+                    <main className="w-full flex flex-col py-4 flex-grow max-w-5xl items-center ">
+                        <div className="w-full border-2 border-blue-600 rounded-xl p-3 mt-10 sm:w-3/4">
                             <div className="flex flex-col justify-center">
                                 <span className="text-xl text-center"> Create a new Proposal</span>
                                 <p className="mt-4">
@@ -143,6 +143,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 
                                     ></textarea>
                                     <input
+                                        className='w-full'
                                         type="file"
                                         name="proposal-image"
                                         onChange={fetchImage}

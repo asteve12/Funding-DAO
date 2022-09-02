@@ -14,11 +14,11 @@ const Navbar = () => {
     
     
     return <>
-        <nav className="w-full h-16 mt-auto max-w-5xl">
-            <div className="flex flex-row justify-between items-center h-full">
-                <div className="">
+        <nav className="w-full flex mt-4 max-w-5xl h-auto flex-col sm:flex-row sm:block ">
+            <div className="flex flex-col sm:flex-row  sm:justify-between items-center h-full">
+                <div className="mb-5">
                     <Link href="/" passHref>
-                    <span className="font-semibold text-xl cursor-pointer">
+                    <span className="font-semibold text-xl cursor-pointer mb-2">
                         FundingDAO
                     </span>
                     </Link>
@@ -33,6 +33,8 @@ const Navbar = () => {
                     </span>
                    
                 </div> 
+
+                <div >
 
                 {
                     account ? (
@@ -51,15 +53,16 @@ const Navbar = () => {
                                 <span className="text-lg text-white">connect</span>
                             </div>
                     )
-                }
+                    }
+                    </div>
             </div>
         </nav>
 
-        <nav className="w-full h-16 m-auto max-w-5xl flex justify-center">
-            <div className="flex flex-row justify-between items-center h-full">
+        <nav className="w-full h-16 m-auto max-w-5xl flex justify-center mb-20 sm:mb-0">
+            <div className="flex flex-col justify-between items-center h-full">
                 {
                     account && (
-                        <div className="flex flex-row items-center justify-center h-full" >
+                        <div className="flex flex-col mt-5 mb-5 items-center  h-full  sm:flex-row " >
                             <TabButton
                                 title="Home"
                                 isActive={router.asPath === "/"}
