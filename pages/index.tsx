@@ -17,7 +17,12 @@ function getLibrary(provider:any, connector:any) {
 const Home = () => {
   
   const { isMember, loading, account } = useData()
-  console.log("isMember",isMember)
+  console.log("isMember", isMember)
+  //@ts-ignore
+  if (window.ethereum) {
+    return alert("install wallet for site to function properly")
+  }
+  
 
   if (loading) {
     return (
