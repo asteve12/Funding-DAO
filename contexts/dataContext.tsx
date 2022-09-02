@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 interface DataCOntextProps{
     account: string;
     loading: boolean;
-    connect: () => Promise<void>;
+    connect: (type:string) => Promise<void>;
     fundingDao: any;
     allProposals: Proposal[];
     isStakeholder: boolean;
@@ -114,11 +114,11 @@ export const useProviderData = () => {
     }) 
    
 
-    useEffect(() => {
+    // useEffect(() => {
        
-        connect()
+    //      connect()
        
-    }, [])
+    // }, [])
 
     useEffect(() => {
         active && loadBlockchainData()
@@ -134,17 +134,24 @@ export const useProviderData = () => {
 
 
 //help connect to wallet
-const connect = async () => {
+    
+    const connect = async (type: string) => {
+    
+        if (type === "metamask") {
+            //@ts-ignore
+            if(!window.ethereum) return alert("please install wallet")
+            try {
+                await activate(injected)
+             }
+            catch (e) {
+                console.log("error12", e)
+                console.log("my-error",error)
+          
+                
+            }
+     }   
        
-    try {
-        await activate(injected)
-     }
-    catch (e) {
-        console.log("error12", e)
-        console.log("my-error",error)
   
-        
-    }
        
        
 }

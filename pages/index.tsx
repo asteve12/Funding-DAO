@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image"
 import { CreateMember } from "../components/createMember";
 import Navbar from "../components/navbar";
 import { Proposallist } from "../components/proposalList";
@@ -8,7 +9,9 @@ import { ethers } from "ethers";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import 'tailwindcss/tailwind.css'
-
+//assets
+import metemaskImg from "../assets/connectWallet/metamask.png"
+import walletConn from "../assets/connectWallet/walletConnect.jpeg"
 
 function getLibrary(provider:any, connector:any) {
   return new Web3Provider(provider)
@@ -16,31 +19,41 @@ function getLibrary(provider:any, connector:any) {
 
 const Home = () => {
   
-  const { isMember, loading, account } = useData()
+  const { isMember, loading, account,connect} = useData()
   console.log("isMember", isMember)
-  //@ts-ignore
-  if (window.ethereum) {
-    return alert("install wallet for site to function properly")
-  }
-  
 
-  if (loading) {
-    return (
-      <Web3ReactProvider getLibrary={getLibrary}>
-         <div className="h-screen w-screen flex justify-center items-center">
-        <div className="text-2xl font-bold text-gray-500">Loading ....</div>
-      </div>
-      </Web3ReactProvider>
+  //@ts-ignore
+  // if (!window.ethereum) {
+  //   return alert("install wallet for site to function properly ");
+  // }
+
+  // if (loading) {
+  //   return (
+  //     <Web3ReactProvider getLibrary={getLibrary}>
+  //        <div className="h-screen w-screen flex justify-center items-center">
+  //       <div className="text-2xl font-bold text-gray-500">Loading ....</div>
+  //     </div>
+  //     </Web3ReactProvider>
      
-    )
-  }
+  //   )
+  // }
 
   if (!account) {
     return (
       <Web3ReactProvider getLibrary={getLibrary}>
-         <div className="h-screen w-screen flex justify-center items-center">
+        <div className="h-screen relative w-screen flex flex-col justify-center items-center bg-[#53D2DC]">
+          <p className="absolute top-5  font-bold  text-50px text-white">FundingDAO</p>
+          <p className="text-#002B5B">Welcome to funding DAO A place to bring your business idea to life</p>
         <div className="text-2xl font-bold text-gray-500">
-          Please connect Metamask Wallet
+            Please connect  Wallet
+            <button onClick={()=> connect("metamask") } className="w-48 flex p-5  bordex-box items-center justify-center ml-auto mr-auto text-sm mt-5 rounded-xl  h-50px bg-[#002B5B] text-white flex ">
+              <Image  className="mr-5"  width="30px" height="30px" src={metemaskImg} alt="" />
+              Metamask
+            </button>
+            <button className="w-48 flex p-5  bordex-box items-center justify-center ml-auto mr-auto text-sm mt-5 rounded-xl  h-50px bg-[#002B5B] text-white flex ">
+              <Image  className="mr-5"  width="30px" height="30px" src={walletConn} alt="" />
+              walletConnect
+            </button>
         </div>
       </div>
       </Web3ReactProvider>
