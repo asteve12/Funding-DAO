@@ -47,7 +47,7 @@ const Navbar = () => {
                             <div
                                 className="bg-green-500 px-6 py-2 rounded-md cursor-pointer"
                                 onClick={() => {
-                                    connect()
+                                    connect("")
                                 }}
                             >
                                 <span className="text-lg text-white">connect</span>
