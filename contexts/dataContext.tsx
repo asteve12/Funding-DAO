@@ -95,7 +95,7 @@ export const useProviderData = () => {
     const [allVotes, setAllVotes] = useState<string[]>([])
     const [allInvestedProposal, setAllInvestedProposal] = useState<Proposal[]>([]);
     const {chainId,connector, activate, account, deactivate,error, library,active } = useWeb3React()
-    const { injected } = connectors;
+    const { injected,walletconnect } = connectors;
 
 
     useEffect(() => {
@@ -149,6 +149,16 @@ export const useProviderData = () => {
           
                 
             }
+        } 
+
+        if (type === "walletconnect") {
+            try {
+                walletconnect.connect()
+            }
+            catch (e) {
+                
+            }
+           
      }   
        
   

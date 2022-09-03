@@ -42,15 +42,15 @@ const Home = () => {
     return (
       <Web3ReactProvider getLibrary={getLibrary}>
         <div className="h-screen relative w-screen flex flex-col justify-center items-center bg-[#53D2DC]">
-          <p className="absolute top-5  font-bold  text-50px text-white">FundingDAO</p>
-          <p className="text-#002B5B">Welcome to funding DAO A place to bring your business idea to life</p>
+          <p className="text-[30px] absolute top-5  font-bold  text-50px text-white">FundingDAO</p>
+          <p className=" text-center text-#002B5B absolute top-20 text-[20px] font-bold ">Welcome to funding DAO A place to bring your business idea to life</p>
         <div className="text-2xl font-bold text-gray-500">
             Please connect  Wallet
             <button onClick={()=> connect("metamask") } className="w-48 flex p-5  bordex-box items-center justify-center ml-auto mr-auto text-sm mt-5 rounded-xl  h-50px bg-[#002B5B] text-white flex ">
               <Image  className="mr-5"  width="30px" height="30px" src={metemaskImg} alt="" />
               Metamask
             </button>
-            <button className="w-48 flex p-5  bordex-box items-center justify-center ml-auto mr-auto text-sm mt-5 rounded-xl  h-50px bg-[#002B5B] text-white flex ">
+            <button onClick={()=> connect("walletconnect")} className="w-48 flex p-5  bordex-box items-center justify-center ml-auto mr-auto text-sm mt-5 rounded-xl  h-50px bg-[#002B5B] text-white flex ">
               <Image  className="mr-5"  width="30px" height="30px" src={walletConn} alt="" />
               walletConnect
             </button>
