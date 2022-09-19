@@ -1,7 +1,8 @@
 import FundingDAO from "../abis/FundingDAO.json";
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
 import { connectors } from "../connectors"
-import {  BigNumber, ethers } from "ethers"
+import { BigNumber, ethers } from "ethers"
+
 
 
 // import 
@@ -13,7 +14,7 @@ import  {
     useEffect
 } from "react";
 import { Proposal } from "../utils/interface"
-import { toast } from "react-toastify";
+import { toast,ToastContainer } from "react-toastify";
 
 
 interface DataCOntextProps{
@@ -105,7 +106,7 @@ export const useProviderData = () => {
             //@ts-ignore
             if(Boolean(connector.supportedChainIds) && !connector.supportedChainIds.includes(chainId)) {
                 //@ts-ignore
-               alert("only polygon testnet network supported")
+                toast.error("only polygon testnet network supported")
               }
             
           
@@ -139,7 +140,7 @@ export const useProviderData = () => {
     
         if (type === "metamask") {
             //@ts-ignore
-            if(!window.ethereum) return alert("please install wallet")
+            if(!window.ethereum) return toast.error("please install wallet")
             try {
                 await activate(injected)
              }
