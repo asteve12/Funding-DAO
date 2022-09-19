@@ -105,7 +105,7 @@ export const useProviderData = () => {
             //@ts-ignore
             if(Boolean(connector.supportedChainIds) && !connector.supportedChainIds.includes(chainId)) {
                 //@ts-ignore
-               alert("only polygon network supported")
+               alert("only polygon testnet network supported")
               }
             
           
